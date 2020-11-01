@@ -11,7 +11,7 @@ import useAPI from "./hooks/useAPI";
 
 const App = () => {
   const [{ data: locations, isLoading: locationsLoading }, setSearchLocationsURL] = useAPI('')
-  const [{ data: locationInfo, isLoading: locationLoading }, setLocationsURL] = useAPI('')
+  const [{ data: locationInfo, isLoading: locationLoading }, setLocationURL] = useAPI('')
   const [location, setLocation] = useState(null)
   const isLoading = locationsLoading || locationLoading
 
@@ -24,17 +24,18 @@ const App = () => {
   };
 
   const handleClickChangeLocation = async (woeid) => {
-    setLocationsURL(getLocationUrl(woeid));
+    setLocationURL(getLocationUrl(woeid));
   };
 
   useEffect(() => {
     if (!locations || locations.length < 1) {
       setLocation(null)
+      setLocationURL('')
       return () => {}
     }
 
-    setLocationsURL(getLocationUrl(locations[0].woeid))
-  }, [locations, setLocationsURL])
+    setLocationURL(getLocationUrl(locations[0].woeid))
+  }, [locations, setLocationURL])
 
   useEffect(() => {
     if (locationInfo) {
