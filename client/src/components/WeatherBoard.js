@@ -1,37 +1,50 @@
 import React from "react";
 import styled from "styled-components";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
 import WeatherCard from "./WeatherCard";
-import CardDeck from "react-bootstrap/CardDeck";
-import { Card } from "react-bootstrap";
+import OtherLocations from "./OtherLocations";
 
-const WeatherBoard = ({ weathers }) => {
-  if (!weathers) {
-    return null;
+const NotFound = () => {
+  return (
+    <Card>
+      <Card.Body>Not found</Card.Body>
+    </Card>
+  );
+};
+
+const WeatherBoard = ({ location, locations, handleClickChangeLocation }) => {
+  if (!location?.weathers?.length) {
+    return <NotFound />;
   }
-
-  const title = weathers[0].title;
 
   return (
     <Card>
-      <Card.Header>{title}</Card.Header>
+      <Card.Header>
+        <OtherLocations
+          currentId={location.woeid}
+          locations={locations}
+          handleClick={handleClickChangeLocation}
+        />
+      </Card.Header>
       <Card.Body>
-        <Content>
-          <CardDeck>
-            {weathers.map((state, index) => (
-              <WeatherCard key={index} {...state} />
-            ))}
-          </CardDeck>
-        </Content>
+        <Row>
+          {location.weathers.map((state, index) => (
+            <Col key={index} xs={6} md={4} lg="auto">
+              <Content>
+                <WeatherCard {...state} />
+              </Content>
+            </Col>
+          ))}
+        </Row>
       </Card.Body>
     </Card>
   );
 };
 
 const Content = styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  margin-top: 5px;
 `;
 
 export default WeatherBoard;

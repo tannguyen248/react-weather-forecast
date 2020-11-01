@@ -23,13 +23,18 @@ export const normalizeWeatherForecastData = (data) => {
   }
 
   const weathers = data[CONSOLIDATED_WEATHER].slice(0, 5);
-
-  return weathers.map((weather) => ({
+  const location = {
     title: data.title,
-    state: weather["weather_state_name"],
-    stateAbbr: weather["weather_state_abbr"],
-    minTemp: parseInt(weather["min_temp"]),
-    maxTemp: parseInt(weather["max_temp"]),
-    dayOfWeek: getDayOfWeek(getDate(weather["applicable_date"])),
-  }));
+    woeid: data.woeid,
+    weathers: weathers.map((weather) => ({
+      title: data.title,
+      state: weather["weather_state_name"],
+      stateAbbr: weather["weather_state_abbr"],
+      minTemp: parseInt(weather["min_temp"]),
+      maxTemp: parseInt(weather["max_temp"]),
+      dayOfWeek: getDayOfWeek(getDate(weather["applicable_date"])),
+    })),
+  };
+
+  return location;
 };

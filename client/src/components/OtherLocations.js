@@ -1,18 +1,22 @@
 import React from "react";
-import { ListGroup } from "react-bootstrap";
+import Nav from "react-bootstrap/Nav";
 
-const OtherLocations = ({ locations, handleClick }) => {
+const OtherLocations = ({ currentId, locations, handleClick }) => {
   if (!locations) {
     return null;
   }
+
   return (
-    <ListGroup horizontal>
+    <Nav variant="pills" defaultActiveKey={currentId}>
       {locations.map(({ title, woeid }) => (
-        <ListGroup.Item action key={woeid} onClick={() => handleClick(woeid)}>
-          {title}
-        </ListGroup.Item>
+        <Nav.Item
+          key={woeid}
+          onClick={() => handleClick(woeid)}
+        >
+          <Nav.Link eventKey={woeid}>{title}</Nav.Link>
+        </Nav.Item>
       ))}
-    </ListGroup>
+    </Nav>
   );
 };
 

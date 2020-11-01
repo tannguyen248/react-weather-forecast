@@ -1,65 +1,58 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import { normalizeWeatherForecastData } from "./helpers/funcs";
-import { searchLocations, getWeatherForecast } from "./helpers/api";
-import OtherLocations from "./components/OtherLocations";
+import { getSearchLocationsUrl, getLocationUrl } from "./helpers/api";
 import LayoutSection from "./components/LayoutSection";
 import SearchInput from "./components/SearchInput";
+import BackdropSpinner from "./components/BackdropSpinner";
 import WeatherBoard from "./components/WeatherBoard";
+import useAPI from "./hooks/useAPI";
 
-function App() {
-  const [searchValue, setSearchValue] = useState("");
-  const [location, setLocation] = useState(null);
-  const [locations, setLocations] = useState(null);
+const App = () => {
+  const [{ data: locations, isLoading: locationsLoading }, setSearchLocationsURL] = useAPI('')
+  const [{ data: locationInfo, isLoading: locationLoading }, setLocationsURL] = useAPI('')
+  const [location, setLocation] = useState(null)
+  const isLoading = locationsLoading || locationLoading
 
-  const handleSearch = async () => {
-    if (!searchValue) {
+  const handleSearch = async (value) => {
+    if (!value) {
       return;
     }
 
-    const searchedLocations = await searchLocations(searchValue);
-    setLocations(searchedLocations);
-
-    if (searchedLocations.length > 0) {
-      const weathers = normalizeWeatherForecastData(
-        await getWeatherForecast(searchedLocations[0].woeid)
-      );
-      setLocation(weathers);
-    }
-  };
-
-  const handleChangeSearchInput = (e) => {
-    setSearchValue(e.target.value);
+    setSearchLocationsURL(getSearchLocationsUrl(value));
   };
 
   const handleClickChangeLocation = async (woeid) => {
-    const weathers = normalizeWeatherForecastData(
-      await getWeatherForecast(woeid)
-    );
-    setLocation(weathers);
+    setLocationsURL(getLocationUrl(woeid));
   };
 
+  useEffect(() => {
+    if (!locations || locations.length < 1) {
+      setLocation(null)
+      return () => {}
+    }
+
+    setLocationsURL(getLocationUrl(locations[0].woeid))
+  }, [locations])
+
+  useEffect(() => {
+    if (locationInfo) {
+      setLocation(normalizeWeatherForecastData(locationInfo))
+    }
+  }, [locationInfo])
+  
   return (
-    <Container className="App">
+    <Container className="App" fluid="sm">
+      <BackdropSpinner display={isLoading} />
       <LayoutSection>
-        <SearchInput
-          value={searchValue}
-          handleChange={handleChangeSearchInput}
-          handleSearch={handleSearch}
-        />
+        <SearchInput handleSearch={handleSearch} />
       </LayoutSection>
       <LayoutSection>
-        <OtherLocations
-          locations={locations}
-          handleClick={handleClickChangeLocation}
-        />
-      </LayoutSection>
-      <LayoutSection>
-        <WeatherBoard weathers={location} />
+        <WeatherBoard {...{ locations, location, handleClickChangeLocation }} />
       </LayoutSection>
     </Container>
   );
-}
+};
 
 export default App;
