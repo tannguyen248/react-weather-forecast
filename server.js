@@ -29,15 +29,14 @@ app.get("/location/search", async (req, res) => {
 
 app.get("/location/:woeid", async (req, res) => {
   const woeid = req.params.woeid;
-  console.log(woeid);
+
   if (!woeid) {
     res.status(400).send("woeid is required");
   }
-  console.log(`${API_LOCATION}/${woeid}`);
+
   fetch(`${API_LOCATION}/${woeid}`)
     .then((response) => response.json())
     .then((json) => {
-      console.log(json);
       return res.json(json);
     })
     .catch((error) => {

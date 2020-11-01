@@ -1,6 +1,6 @@
 import React from "react";
-import Backdrop from "./Backdrop";
 import Spinner from "react-bootstrap/Spinner";
+import Backdrop from "./Backdrop";
 
 const BackdropSpinner = ({ display }) => {
   return (

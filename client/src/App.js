@@ -34,7 +34,7 @@ const App = () => {
     }
 
     setLocationsURL(getLocationUrl(locations[0].woeid))
-  }, [locations])
+  }, [locations, setLocationsURL])
 
   useEffect(() => {
     if (locationInfo) {
