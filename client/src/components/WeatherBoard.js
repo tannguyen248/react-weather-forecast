@@ -15,12 +15,8 @@ const NotFound = () => {
 };
 
 const WeatherBoard = ({ location, locations, handleClickChangeLocation }) => {
-  if (!locations) {
+  if (!locations || !location) {
     return null;
-  }
-
-  if (!location?.weathers?.length) {
-    return <NotFound />;
   }
 
   return (

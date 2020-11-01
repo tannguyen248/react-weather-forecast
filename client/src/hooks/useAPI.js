@@ -11,18 +11,22 @@ const useAPI = ({ initialUrl }) => {
 
     const fetchAPI = async () => {
       if (!url) {
-        return
+        return;
       }
 
       setIsLoading(true);
-      const response = await fetch(url);
 
-      if (mounted && validateStatus(response.status)) {
-        const body = await response.json()
-        setData(body);
+      try {
+        const response = await fetch(url);
+        if (mounted && validateStatus(response.status)) {
+          const body = await response.json();
+          setData(body);
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setIsLoading(false);
       }
-
-      setIsLoading(false);
     };
 
     fetchAPI();

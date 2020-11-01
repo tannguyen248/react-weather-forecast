@@ -32,6 +32,7 @@ export const normalizeWeatherForecastData = (data) => {
       stateAbbr: weather["weather_state_abbr"],
       minTemp: parseInt(weather["min_temp"]),
       maxTemp: parseInt(weather["max_temp"]),
+      date: getDate(weather["applicable_date"]),
       dayOfWeek: getDayOfWeek(getDate(weather["applicable_date"])),
     })),
   };
