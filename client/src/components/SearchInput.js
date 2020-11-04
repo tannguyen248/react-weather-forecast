@@ -19,13 +19,14 @@ const SearchInput = ({ handleSearch }) => {
   return (
     <InputGroup>
       <FormControl
+        data-testid="txt-search-input"
         placeholder="Search city"
         aria-label="Search city"
         onKeyDown={(e) => e.keyCode === ENTER_KEYCODE && onSearch()}
         ref={inputRef}
       />
       <InputGroup.Append>
-        <Button variant="outline-secondary" onClick={onSearch}>
+        <Button variant="outline-secondary" onClick={onSearch} data-testid="btn-search-input">
           <FontAwesomeIcon icon={faSearch} />
         </Button>
       </InputGroup.Append>

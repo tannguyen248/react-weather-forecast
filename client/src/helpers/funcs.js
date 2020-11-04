@@ -11,10 +11,6 @@ export const getDayOfWeek = (date) => {
   return weekdays[date.getDay()];
 };
 
-export const toFixedNumber = (number, noteLength) => {
-  return parseFloat(number).toFixed(noteLength);
-};
-
 export const normalizeWeatherForecastData = (data) => {
   const CONSOLIDATED_WEATHER = "consolidated_weather";
 

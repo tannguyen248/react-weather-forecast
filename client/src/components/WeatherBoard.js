@@ -6,14 +6,6 @@ import Card from "react-bootstrap/Card";
 import WeatherCard from "./WeatherCard";
 import OtherLocations from "./OtherLocations";
 
-const NotFound = () => {
-  return (
-    <Card>
-      <Card.Body>Not found</Card.Body>
-    </Card>
-  );
-};
-
 const WeatherBoard = ({ location, locations, handleClickChangeLocation }) => {
   if (!locations || !location) {
     return null;
