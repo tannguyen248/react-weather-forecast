@@ -12,7 +12,7 @@ const WeatherBoard = ({ location, locations, handleClickChangeLocation }) => {
   }
 
   return (
-    <Card>
+    <Card data-testid="card-weather-board">
       <Card.Header>
         <OtherLocations
           currentId={location.woeid}
